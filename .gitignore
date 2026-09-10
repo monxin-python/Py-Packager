@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# PyInstaller 产物（本工具自己打包时生成，含绝对路径）
+build/
+dist/
+*.spec
+
+# 运行期状态：最近文件历史与表单设置（含本机绝对路径）
+pyinstaller_history.json
+pyinstaller_settings.json
+
+# 编辑器
+.idea/
+.vscode/
