@@ -4,8 +4,19 @@
 
 **Windows 专用**，纯标准库 tkinter，无第三方 GUI 依赖。
 
-<img width="862" height="802" alt="image" src="https://github.com/user-attachments/assets/080cddb4-23f6-4093-90cc-186be35fd3cd" />
+<img width="862" height="802" alt="界面截图" src="https://github.com/user-attachments/assets/080cddb4-23f6-4093-90cc-186be35fd3cd" />
 
+## 下载
+
+不想装 Python 环境？直接下打包好的 exe：
+
+**➡ [前往 Releases 下载](https://github.com/monxin-python/Py-Packager/releases)**
+
+Windows 64 位 · 约 10.6 MB · 双击即用，无需安装 Python。
+
+> 首次运行时 Windows 可能弹出蓝色的「Windows 已保护你的电脑」—— 这是 SmartScreen 对**未签名程序**的常规提示，不是病毒报警。点「更多信息」→「仍要运行」即可。
+>
+> exe 没有代码签名（签名证书要花钱），所以这个提示对任何个人开发的小工具都会出现，属于正常现象。
 
 ## 功能
 
