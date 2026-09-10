@@ -4,7 +4,7 @@
 
 **Windows 专用**，纯标准库 tkinter，无第三方 GUI 依赖。
 
-![Uploading image.png…]()
+<img width="862" height="802" alt="image" src="https://github.com/user-attachments/assets/080cddb4-23f6-4093-90cc-186be35fd3cd" />
 
 
 ## 功能
