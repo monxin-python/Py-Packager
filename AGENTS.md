@@ -6,8 +6,8 @@
 
 PyInstaller 快捷打包工具 v3.0.0 —— 一个 **Windows 专用的 tkinter GUI 应用**，用于图形化配置 PyInstaller 打包参数、预览命令、后台执行打包并实时显示日志。
 
-- 入口：`main.py` → `pyinstaller_helper.app.App`
-- 运行方式：`python main.py`（需先 `pip install pyinstaller`）
+- 入口：`Py打包工具.py` → `pyinstaller_helper.app.App`
+- 运行方式：`python Py打包工具.py`（需先 `pip install pyinstaller`）
 - 无测试、无第三方 GUI 依赖（仅标准库 tkinter）
 
 ## 架构与模块职责
