@@ -3,6 +3,7 @@
 import os
 import queue
 import tkinter as tk
+from dataclasses import asdict
 from tkinter import filedialog, messagebox, ttk
 
 from . import config, settings
@@ -93,8 +94,6 @@ class App:
         path = filedialog.askopenfilename(filetypes=[("Python Files", "*.py")])
         if path:
             self.file_card.script_path.set(path)
-            save_history(path)
-            self.update_history_menu()
             self.status_var.set(f"已选择脚本：{os.path.basename(path)}")
 
     def select_icon(self):
@@ -138,8 +137,11 @@ class App:
     def update_history_menu(self):
         self.menubar.set_history(load_history(), on_pick=self._pick_history)
 
-    def _pick_history(self, path):
-        self.file_card.script_path.set(path)
+    def _pick_history(self, entry):
+        """点历史记录：把该脚本的整份配置回填到两个卡片"""
+        self.file_card.apply_values(entry)
+        self.options_card.apply_values(entry)
+        self.status_var.set(f"已载入配置：{os.path.basename(entry.get('script', ''))}")
 
     def clear_history(self):
         clear_history_file()
@@ -231,6 +233,13 @@ class App:
         self.log.append("[已复制命令到剪贴板]\n")
 
     # ---------------------------------------------------------------- 打包执行
+    def _remember_build(self):
+        """打包成功：把本次配置存进历史，下次可从菜单一键载入"""
+        if self._cfg is None:
+            return
+        save_history(asdict(self._cfg))
+        self.update_history_menu()
+
     def _clean_after_build(self):
         """按「清理构建文件」选项删除本次构建的中间产物（失败时保留，便于排查）"""
         if not (self._cfg and self._cfg.clean):
@@ -269,6 +278,7 @@ class App:
                     if msg == 0:
                         self.status_var.set("打包完成")
                         self.log.append("\n[打包完成]\n")
+                        self._remember_build()
                         self._clean_after_build()
                         out_dir = self.get_output_dir()
                         if messagebox.askyesno(
