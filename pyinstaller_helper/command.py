@@ -81,3 +81,50 @@ def assemble_command(base, cfg: BuildConfig):
 def format_cmd(cmd):
     """仅用于预览/日志显示：含空格的参数加引号"""
     return " ".join(f'"{a}"' if any(c.isspace() for c in a) else a for a in cmd)
+
+
+def clean_artifacts(cfg: BuildConfig):
+    """删除本次构建的中间产物，返回已删除的相对路径列表
+
+    复选框的「清理构建文件」光靠 --clean 做不到：它只在构建前清缓存与 workpath
+    内容，构建后 build/<name>/ 会重新生成，.spec 更是从不清理。故打包成功后在此收尾。
+    只动本次构建产物，其它项目的 build 子目录与 .spec 保持原样。
+    """
+    name = os.path.splitext(os.path.basename(cfg.name.strip() or cfg.script))[0]
+    if not name.strip("."):  # 空名或 "." / ".." 之类，拒绝删除
+        return []
+    build_dir = os.path.join("build", name)
+    spec = name + ".spec"
+    removed = []
+    try:
+        if os.path.isdir(build_dir):
+            shutil.rmtree(build_dir)
+            removed.append(build_dir)
+            if not os.listdir("build"):  # 本次是最后一个，顺带清掉空的 build
+                os.rmdir("build")
+        if os.path.isfile(spec):
+            os.remove(spec)
+            removed.append(spec)
+    except OSError:
+        pass  # 文件被占用/无权限时留着，不影响打包结果
+    return removed
+
+
+if __name__ == "__main__":
+    # 自检：只删本次构建产物，不碰其它项目的中间产物
+    import tempfile
+
+    _cwd = os.getcwd()
+    with tempfile.TemporaryDirectory() as _d:
+        os.chdir(_d)
+        os.makedirs(os.path.join("build", "demo"))
+        os.makedirs(os.path.join("build", "其它"))
+        open("demo.spec", "w").close()
+        open("其它.spec", "w").close()
+        _removed = clean_artifacts(BuildConfig(script="demo.py"))
+        assert _removed == [os.path.join("build", "demo"), "demo.spec"], _removed
+        assert not os.path.exists(os.path.join("build", "demo"))
+        assert os.path.isdir(os.path.join("build", "其它"))
+        assert os.path.isfile("其它.spec")
+        os.chdir(_cwd)
+    print("自检通过")

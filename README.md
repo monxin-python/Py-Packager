@@ -64,7 +64,7 @@ python Py打包工具.py
 | 单文件模式 | `--onefile` | 打成单个 exe |
 | 隐藏控制台窗口 | `--windowed` | 双击运行不弹黑框；与 `input()` 冲突 |
 | 覆盖输出不询问 | `--noconfirm` | 直接覆盖旧的输出目录 |
-| 清理构建文件 | `--clean` | 打包前清掉缓存 |
+| 清理构建文件 | `--clean` | 打包前清缓存；打包成功后再由工具删掉本次的 `build/<程序名>/` 与 `<程序名>.spec`（失败时保留，便于排查） |
 | 调试模式 | `--debug` | 等级可选 `all` / `imports` / `bootloader` / `noarchive` |
 
 ## 项目结构

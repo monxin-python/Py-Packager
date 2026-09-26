@@ -9,7 +9,14 @@ from . import config, settings
 from .analyzer import check_input_functions
 from .build_process import BuildProcess
 from .chrome import ActionsBar, Header, StatusBar
-from .command import BuildConfig, assemble_command, find_pyinstaller, format_cmd, validate_inputs
+from .command import (
+    BuildConfig,
+    assemble_command,
+    clean_artifacts,
+    find_pyinstaller,
+    format_cmd,
+    validate_inputs,
+)
 from .file_card import FileCard
 from .history import clear_history_file, load_history, save_history
 from .icon import image_to_ico
@@ -24,6 +31,7 @@ class App:
 
     def __init__(self):
         self.build_proc = BuildProcess()
+        self._cfg = None  # 本次打包用的配置（打包结束后按它清理中间产物）
         self._init_root()
         self._build_ui()
         self._apply_settings(settings.load_settings())
@@ -196,6 +204,7 @@ class App:
 
         cmd = assemble_command(base, cfg)
         self._show_preview(cmd)
+        self._cfg = cfg  # 记下本次配置，供打包成功后清理
         return cmd
 
     def _show_preview(self, cmd):
@@ -222,6 +231,14 @@ class App:
         self.log.append("[已复制命令到剪贴板]\n")
 
     # ---------------------------------------------------------------- 打包执行
+    def _clean_after_build(self):
+        """按「清理构建文件」选项删除本次构建的中间产物（失败时保留，便于排查）"""
+        if not (self._cfg and self._cfg.clean):
+            return
+        removed = clean_artifacts(self._cfg)
+        if removed:
+            self.log.append("[已清理] " + "、".join(removed) + "\n")
+
     def run_pyinstaller(self):
         if self.build_proc.is_running():
             messagebox.showwarning("提示", "打包正在进行中，请稍候")
@@ -252,6 +269,7 @@ class App:
                     if msg == 0:
                         self.status_var.set("打包完成")
                         self.log.append("\n[打包完成]\n")
+                        self._clean_after_build()
                         out_dir = self.get_output_dir()
                         if messagebox.askyesno(
                             "成功",
