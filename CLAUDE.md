@@ -22,12 +22,12 @@ PyInstaller 快捷打包工具 v3.0.0 —— 一个 **Windows 专用的 tkinter 
 | `file_card.py` | 文件设置卡片（自带输入框变量） | 仅界面构建，不含弹窗 |
 | `options_card.py` | 打包选项卡片（复选框、调试等级下拉框） | 仅界面构建，不含弹窗 |
 | `panels.py` | 命令预览、打包日志面板 | 仅界面构建，不含弹窗 |
-| `menubar.py` | 菜单栏（最近文件、设置） | 仅界面构建，不含弹窗 |
+| `menubar.py` | 菜单栏（最近打包、设置） | 仅界面构建，不含弹窗 |
 | `command.py` | `BuildConfig` dataclass、参数校验、命令组装、预览格式化 | 纯逻辑，不含任何弹窗 |
 | `icon.py` | 用 Win32 API 从 .ico 提取图标，渲染为 PNG 字节供预览 | 纯逻辑；Windows 专用；仅标准库；失败返回 None |
 | `analyzer.py` | 用 AST 检测脚本中的 `input()`/`getpass()` 调用 | 纯逻辑；避免注释/字符串误报 |
 | `build_process.py` | 后台线程运行 PyInstaller，经队列向 GUI 发消息 | 不直接操作 GUI；消息 kind：`OUT`/`DONE`/`ERROR` |
-| `history.py` | 最近文件历史 JSON 读写 | 纯逻辑；读写失败静默降级 |
+| `history.py` | 打包历史 JSON 读写（每条一份完整配置快照） | 纯逻辑；读写失败静默降级 |
 | `settings.py` | 表单设置 JSON 读写（默认值合并、类型校验） | 纯逻辑；读写失败静默降级 |
 | `config.py` | 历史/设置文件路径、配色、字体常量 | 唯一集中配置处 |
 

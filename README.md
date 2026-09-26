@@ -26,7 +26,7 @@ Windows 64 位 · 约 10.6 MB · 双击即用，无需安装 Python。
 - **图标预览**：选好图标当场看到成品 exe 的缩略图和名称
 - **后台打包 + 实时日志**：打包不卡界面，PyInstaller 的输出逐行滚动显示
 - **`input()` 冲突检测**：勾了 `--windowed` 但脚本里有 `input()` / `getpass()` 时弹窗提醒。这类脚本打包后会因读不到标准输入而崩溃，工具会问你要不要自动取消 `--windowed`
-- **最近文件**：常用脚本一键打开，省去每次翻目录
+- **最近打包**：打包成功即记下该脚本的整套配置（图标、输出路径、程序名称、打包选项），下次从菜单点一下全部回填
 - **设置持久化**：表单内容自动保存，下次打开就是上次的样子
 
 ## 环境要求
@@ -77,13 +77,13 @@ pyinstaller_helper/
 ├── file_card.py           文件设置卡片
 ├── options_card.py        打包选项卡片
 ├── panels.py              命令预览与日志面板
-├── menubar.py             菜单栏（最近文件、设置）
+├── menubar.py             菜单栏（最近打包、设置）
 ├── style.py               ttk 全局样式
 ├── command.py             参数校验与命令组装（纯逻辑）
 ├── build_process.py       后台打包线程，经队列向界面回传日志
 ├── analyzer.py            用 AST 检测脚本中的 input() / getpass()
 ├── icon.py                解析 .ico 并渲染为 PNG 供预览
-├── history.py             最近文件历史读写
+├── history.py             打包历史（完整配置快照）读写
 ├── settings.py            表单设置读写
 └── config.py              路径与配色常量
 ```
